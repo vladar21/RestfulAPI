@@ -46,6 +46,14 @@
 
 ## Развертываене базы данных
 
-Файл с дампом базы libraryinstall.sql находится в каталоге config, развернуть с помощью командной строки MySQL и оператора source.
+Файл с дампом базы libraryinstall.sql находится в каталоге config, его можно легко развернуть с помощью командной строки MySQL и оператора source.
 
 ## Примеры запросов к API
+
+Работа API тестировалась с помощью программы Postman (https://www.getpostman.com/).  
+
+№№№ метод read().
+
+[home page url]/[название сущности]/read.php  
+Например: http://localhost:8000/book/read.php
+
