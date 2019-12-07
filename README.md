@@ -4,19 +4,19 @@
 * dir: RestfulAPI
     * dir: author (CRUD для сущности Автор)
         - file: create.php
-    1.1.2. file: delete.php
-    1.1.3. file: read_one.php
-    1.1.4. file: read.php
-    1.1.5. file: search.php
-    1.1.6. file: update.php
-  1.2. dir: authors (CRUD для сущности Авторы, через которую реализована связь многие ко многим между сущностями Автор и Книга)
-    1.2.1. file: create.php
-    1.2.2. file: delete.php
-    1.2.3. file: read_one.php
-    1.2.4. file: read.php
-    1.2.5. file: search.php
-    1.2.6. file: update.php
-  1.3. dir: book (CRUD для сущности Книга)
+        - file: delete.php
+        - file: read_one.php
+        - file: read.php
+        - file: search.php
+        - file: update.php
+    * dir: authors (CRUD для сущности Авторы, через которую реализована связь многие ко многим между сущностями Автор и Книга)
+        - file: create.php
+        - file: delete.php
+        - file: read_one.php
+        - file: read.php
+        - file: search.php
+        - file: update.php
+    * dir: book (CRUD для сущности Книга)
 1.3.1. file: create.php
 1.3.2. file: delete.php
 1.3.3. file: read_one.php
