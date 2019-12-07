@@ -3,7 +3,8 @@ class Database{
  
     // specify your own database credentials
     private $host = "localhost";
-    private $db_name = "api_db";
+    //private $db_name = "api_db";
+    private $db_name = "library";
     private $username = "root";
     private $password = "root";
     public $conn;
