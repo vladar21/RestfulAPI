@@ -14,7 +14,7 @@ include_once '../objects/book.php';
 $database = new Database();
 $db = $database->getConnection();
  
-// prepare product object
+// prepare book object
 $book = new Book($db);
  
 // get id of book to be edited

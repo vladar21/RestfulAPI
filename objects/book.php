@@ -16,7 +16,7 @@ class Book{
         $this->conn = $db;
     }
 
-    // read products
+    // read books
     function read(){
     
         // select all query
@@ -75,7 +75,7 @@ class Book{
         
     }
 
-    // used when filling up the update product form
+    // used when filling up the update book form
     function readOne(){
     
         // query to read single record
@@ -103,7 +103,7 @@ class Book{
         // prepare query statement
         $stmt = $this->conn->prepare( $query );
     
-        // bind id of product to be updated
+        // bind id of book to be updated
         $stmt->bindParam(1, $this->idbook);
     
         // execute query
@@ -119,7 +119,7 @@ class Book{
         $this->authors = $row['authors'];
     }
 
-    // update the product
+    // update the book
     function update(){
     
         // update query
@@ -153,7 +153,7 @@ class Book{
         return false;
     }
 
-    // delete the product
+    // delete the book
     function delete(){
     
         // delete query
@@ -217,24 +217,34 @@ class Book{
         return $stmt;
     }
 
-    // read products with pagination
+    // read books with pagination
     public function readPaging($from_record_num, $records_per_page){
     
         // select query
-        $query = "SELECT
-                    c.name as category_name, p.id, p.name, p.description, p.price, p.category_id, p.created
-                FROM
-                    " . $this->table_name . " p
-                    LEFT JOIN
-                        categories c
-                            ON p.category_id = c.id
-                ORDER BY p.created DESC
-                LIMIT ?, ?";
+        $query = 
+        "SELECT
+            b.idbook, b.title, p.name as 'publisher', GROUP_CONCAT(a.name) as 'authors'
+        FROM
+            authors ats
+        LEFT JOIN
+            books b
+                ON b.idbook = ats.idbook
+        LEFT JOIN
+            author a
+                ON ats.idauthor = a.idauthor
+        LEFT JOIN
+            publishers p
+                ON p.idpublisher = b.idpublisher        
+        GROUP BY
+            b.title
+        ORDER BY b.title ASC
+        LIMIT ?, ?";
     
         // prepare query statement
         $stmt = $this->conn->prepare( $query );
     
         // bind variable values
+
         $stmt->bindParam(1, $from_record_num, PDO::PARAM_INT);
         $stmt->bindParam(2, $records_per_page, PDO::PARAM_INT);
     
@@ -245,7 +255,7 @@ class Book{
         return $stmt;
     }
 
-    // used for paging products
+    // used for paging books
     public function count(){
         $query = "SELECT COUNT(*) as total_rows FROM " . $this->table_name . "";
     

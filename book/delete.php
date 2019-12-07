@@ -14,16 +14,16 @@ include_once '../objects/book.php';
 $database = new Database();
 $db = $database->getConnection();
  
-// prepare product object
+// prepare book object
 $book = new Book($db);
  
-// get product id
+// get book id
 $data = json_decode(file_get_contents("php://input"));
  
-// set product id to be deleted
+// set book id to be deleted
 $book->idbook = $data->idbook;
  
-// delete the product
+// delete the book
 if($book->delete()){
  
     // set response code - 200 ok
@@ -33,7 +33,7 @@ if($book->delete()){
     echo json_encode(array("message" => "Book was deleted."));
 }
  
-// if unable to delete the product
+// if unable to delete the book
 else{
  
     // set response code - 503 service unavailable

@@ -14,13 +14,13 @@ include_once '../objects/book.php';
 $database = new Database();
 $db = $database->getConnection();
  
-// prepare product object
+// prepare book object
 $book = new Book($db);
  
 // set ID property of record to read
 $book->idbook = isset($_GET['idbook']) ? $_GET['idbook'] : die();
  
-// read the details of product to be edited
+// read the details of book to be edited
 $book->readOne();
  
 if($book->title!=null){
@@ -43,7 +43,7 @@ else{
     // set response code - 404 Not found
     http_response_code(404);
  
-    // tell the user product does not exist
+    // tell the user book does not exist
     echo json_encode(array("message" => "Book does not exist."));
 }
 ?>

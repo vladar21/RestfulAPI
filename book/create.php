@@ -9,7 +9,7 @@ header("Access-Control-Allow-Headers: Content-Type, Access-Control-Allow-Headers
 // get database connection
 include_once '../config/database.php';
  
-// instantiate product object
+// instantiate book object
 include_once '../objects/book.php';
  
 $database = new Database();
@@ -40,7 +40,7 @@ if(
         echo json_encode(array("message" => "Book was created."));
     }
  
-    // if unable to create the product, tell the user
+    // if unable to create the book, tell the user
     else{
  
         // set response code - 503 service unavailable
