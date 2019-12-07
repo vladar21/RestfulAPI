@@ -6,28 +6,28 @@ header("Content-Type: application/json; charset=UTF-8");
 // include database and object files
 include_once '../config/core.php';
 include_once '../config/database.php';
-include_once '../objects/author.php';
+include_once '../objects/authors.php';
  
 // instantiate database and book object
 $database = new Database();
 $db = $database->getConnection();
  
 // initialize object
-$author = new Author($db);
+$authors = new Authors($db);
  
 // get keywords
 $keywords=isset($_GET["s"]) ? $_GET["s"] : "";
  
 // query books
-$stmt = $author->search($keywords);
+$stmt = $authors->search($keywords);
 $num = $stmt->rowCount();
  
 // check if more than 0 record found
 if($num>0){
  
     // books array
-    $authors_arr=array();
-    $authors_arr["records"]=array();
+    $authorss_arr=array();
+    $authorss_arr["records"]=array();
  
     // retrieve our table contents
     // fetch() is faster than fetchAll()
@@ -38,19 +38,20 @@ if($num>0){
         // just $name only
         extract($row);
  
-        $author_item=array(
+        $authors_item=array(
+            "idauthors" => $idauthors,
             "idauthor" => $idauthor,
-            "name" => $name
+            "idbook" => $idbook
         );
  
-        array_push($authors_arr["records"], $author_item);
+        array_push($authorss_arr["records"], $authors_item);
     }
  
     // set response code - 200 OK
     http_response_code(200);
  
     // show books data
-    echo json_encode($authors_arr);
+    echo json_encode($authorss_arr);
 }
  
 else{

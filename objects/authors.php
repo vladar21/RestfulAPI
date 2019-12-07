@@ -114,23 +114,26 @@ class Authors{
     
         // update query
         $query = "UPDATE
-                    author
+                    authors
                 SET
-                    idauthor = :idauthor
-                    " . (($this->name != "nothing")?(", name = :name"):"") . "
+                    idauthors = :idauthors
+                    " . (($this->idauthor != "0")?(", idauthor = :idauthor"):"") . "
+                    " . (($this->idbook != "0")?(", idbook = :idbook"):"") . "
                 WHERE
-                    idauthor = :idauthor";
+                    idauthors = :idauthors";
         
         // prepare query statement
         $stmt = $this->conn->prepare($query);        
     
         // sanitize
+        $this->idauthors = htmlspecialchars(strip_tags($this->idauthors));
         $this->idauthor = htmlspecialchars(strip_tags($this->idauthor));
-        $this->name = htmlspecialchars(strip_tags($this->name));
+        $this->idbook = htmlspecialchars(strip_tags($this->idbook));
     
         // bind new values
+        $stmt->bindParam(':idauthors', $this->idauthors);
         $stmt->bindParam(':idauthor', $this->idauthor);
-        $stmt->bindParam(':name', $this->name);
+        $stmt->bindParam(':idbook', $this->idbook);
         
         // execute the query
         if($stmt->execute()){
@@ -169,11 +172,11 @@ class Authors{
     
         // select all query
         $query = "SELECT
-                    idauthor, name
+                    idauthors, idauthor, idbook
                 FROM
-                    author
+                    authors
                 WHERE
-                    idauthor LIKE ? OR name LIKE ?";
+                    idauthor LIKE ? OR idauthor LIKE ? OR idbook LIKE ?";
 
         // prepare query statement
         $stmt = $this->conn->prepare($query);
@@ -185,6 +188,7 @@ class Authors{
         // bind
         $stmt->bindParam(1, $keywords);
         $stmt->bindParam(2, $keywords);
+        $stmt->bindParam(3, $keywords);
     
         // execute query
         $stmt->execute();
