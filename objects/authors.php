@@ -8,7 +8,9 @@ class Authors{
     // object properties
     public $idauthors;
     public $idauthor;
+    public $author;
     public $idbook;
+    public $title;
  
     // constructor with $db as database connection
     public function __construct($db){
@@ -45,18 +47,20 @@ class Authors{
         
         // query to insert record
         $query = "INSERT INTO
-                    author
+                    authors
                 SET
-                    name=:name";
+                    idauthor=:idauthor, idbook=:idbook";
     
         // prepare query
         $stmt = $this->conn->prepare($query);
     
         // sanitize
-        $this->name=htmlspecialchars(strip_tags($this->name));                
+        $this->idauthor=htmlspecialchars(strip_tags($this->idauthor));   
+        $this->idbook=htmlspecialchars(strip_tags($this->idbook));
     
         // bind values
-        $stmt->bindParam(":name", $this->name);
+        $stmt->bindParam(":idauthor", $this->idauthor);
+        $stmt->bindParam(":idbook", $this->idbook);
         
         // execute query
         if($stmt->execute()){
@@ -73,17 +77,23 @@ class Authors{
         // query to read single record
         $query = 
         "SELECT
-            idauthor, name
+            ats.idauthors as 'idauthors', ats.idauthor as 'idauthor', a.name as 'author', b.idbook as 'idbook', b.title as 'title'
         FROM
-            author
+            authors ats
+        LEFT JOIN
+            author a
+                ON a.idauthor = ats.idauthor
+        LEFT JOIN
+            books b
+                ON b.idbook = ats.idbook
         WHERE
-            idauthor = ?";        
+            ats.idauthors = ?";     
         
         // prepare query statement
         $stmt = $this->conn->prepare( $query );
     
         // bind id of publisher to be updated
-        $stmt->bindParam(1, $this->idauthor);
+        $stmt->bindParam(1, $this->idauthors);
     
         // execute query
         $stmt->execute();
@@ -92,8 +102,11 @@ class Authors{
         $row = $stmt->fetch(PDO::FETCH_ASSOC);
     
         // set values to object properties
+        $this->idauthors = $row['idauthors'];
         $this->idauthor = $row['idauthor'];
-        $this->name = $row['name'];
+        $this->author = $row['author'];
+        $this->idbook = $row['idbook'];
+        $this->title = $row['title'];
     }
 
     // update the publisher
@@ -131,16 +144,16 @@ class Authors{
     function delete(){
     
         // delete query
-        $query = "DELETE FROM author WHERE idauthor = ?";
+        $query = "DELETE FROM authors WHERE idauthors = ?";
     
         // prepare query
         $stmt = $this->conn->prepare($query);
     
         // sanitize
-        $this->idauthor=htmlspecialchars(strip_tags($this->idauthor));
+        $this->idauthors=htmlspecialchars(strip_tags($this->idauthors));
     
         // bind id of record to delete
-        $stmt->bindParam(1, $this->idauthor);
+        $stmt->bindParam(1, $this->idauthors);
     
         // execute query
         if($stmt->execute()){

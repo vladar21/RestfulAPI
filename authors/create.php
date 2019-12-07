@@ -10,32 +10,33 @@ header("Access-Control-Allow-Headers: Content-Type, Access-Control-Allow-Headers
 include_once '../config/database.php';
  
 // instantiate book object
-include_once '../objects/author.php';
+include_once '../objects/authors.php';
  
 $database = new Database();
 $db = $database->getConnection();
  
-$author = new Author($db);
+$authors = new Authors($db);
  
 // get posted data
 $data = json_decode(file_get_contents("php://input"));
  
 // make sure data is not empty
 if(
-    !empty($data->name)
+    !empty($data->idauthor)
 ){
  
     // set book property values
-    $author->name = $data->name;
+    $authors->idauthor = $data->idauthor;
+    $authors->idbook = $data->idbook;
     
     // create the book
-    if($author->create()){
+    if($authors->create()){
  
         // set response code - 201 created
         http_response_code(201);
  
         // tell the user
-        echo json_encode(array("message" => "Author was created."));
+        echo json_encode(array("message" => "Authors was created."));
     }
  
     // if unable to create the book, tell the user
@@ -45,7 +46,7 @@ if(
         http_response_code(503);
  
         // tell the user
-        echo json_encode(array("message" => "Unable to create author."));
+        echo json_encode(array("message" => "Unable to create authors."));
     }
 }
  
@@ -56,6 +57,6 @@ else{
     http_response_code(400);
  
     // tell the user
-    echo json_encode(array("message" => "Unable to create author. Data is incomplete."));
+    echo json_encode(array("message" => "Unable to create authors. Data is incomplete."));
 }
 ?>

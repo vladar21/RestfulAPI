@@ -8,33 +8,36 @@ header('Content-Type: application/json');
  
 // include database and object files
 include_once '../config/database.php';
-include_once '../objects/author.php';
- 
+include_once '../objects/authors.php';
+
 // get database connection
 $database = new Database();
 $db = $database->getConnection();
  
 // prepare book object
-$author = new Author($db);
- 
+$authors = new Authors($db);
+
 // set ID property of record to read
-$author->idauthor = isset($_GET['idauthor']) ? $_GET['idauthor'] : die();
+$authors->idauthors = isset($_GET['idauthors']) ? $_GET['idauthors'] : die();
  
 // read the details of book to be edited
-$author->readOne();
- 
-if($author->name!=null){
+$authors->readOne();
+
+if($authors->idauthor!=null){
     // create array
-    $author_arr = array(
-        "idauthor" =>  $author->idauthor,
-        "name" => $author->name
+    $authors_arr = array(
+        "idauthors" => $authors->idauthors,
+        "idauthor" => $authors->idauthor,
+        "author" => $authors->author,
+        "idbook" => $authors->idbook,
+        "title" => $authors->title
     );
  
     // set response code - 200 OK
     http_response_code(200);
  
     // make it json format
-    echo json_encode($author_arr);
+    echo json_encode($authors_arr);
 }
  
 else{
@@ -42,6 +45,6 @@ else{
     http_response_code(404);
  
     // tell the user book does not exist
-    echo json_encode(array("message" => "Author does not exist."));
+    echo json_encode(array("message" => "Authors does not exist."));
 }
 ?>
