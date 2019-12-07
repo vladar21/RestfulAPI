@@ -51,6 +51,7 @@ class Publisher{
         // bind values
         $stmt->bindParam(":name", $this->name);
         
+        var_dump("stmt = ", $stmt);
         // execute query
         if($stmt->execute()){
             return true; 
@@ -96,22 +97,23 @@ class Publisher{
         $query = "UPDATE
                     publishers
                 SET
-                idpublisher = :idpublisher,
-                " . (($this->name != "nothing")?("name = :name, "):"") . "
+                    idpublisher = :idpublisher
+                    " . (($this->name != "nothing")?(", name = :name"):"") . "
                 WHERE
                     idpublisher = :idpublisher";
-    
+        
         // prepare query statement
-        $stmt = $this->conn->prepare($query);
+        $stmt = $this->conn->prepare($query);        
     
         // sanitize
-        $this->idpublisher=htmlspecialchars(strip_tags($this->idpublisher));
-        $this->name=htmlspecialchars(strip_tags($this->name));
+        $this->idpublisher = htmlspecialchars(strip_tags($this->idpublisher));
+        $this->name = htmlspecialchars(strip_tags($this->name));
     
         // bind new values
         $stmt->bindParam(':idpublisher', $this->idpublisher);
         $stmt->bindParam(':name', $this->name);
-    
+        
+        var_dump("stmt = ", $stmt);
         // execute the query
         if($stmt->execute()){
             return true;
