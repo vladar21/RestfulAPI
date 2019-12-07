@@ -8,29 +8,29 @@ header("Access-Control-Allow-Headers: Content-Type, Access-Control-Allow-Headers
  
 // include database and object file
 include_once '../config/database.php';
-include_once '../objects/publisher.php';
+include_once '../objects/author.php';
  
 // get database connection
 $database = new Database();
 $db = $database->getConnection();
  
 // prepare book object
-$publisher = new Publisher($db);
+$author = new Author($db);
  
 // get book id
 $data = json_decode(file_get_contents("php://input"));
  
 // set book id to be deleted
-$publisher->idpublisher = $data->idpublisher;
+$author->idauthor = $data->idauthor;
  
 // delete the book
-if($publisher->delete()){
+if($author->delete()){
  
     // set response code - 200 ok
     http_response_code(200);
  
     // tell the user
-    echo json_encode(array("message" => "Publisher was deleted."));
+    echo json_encode(array("message" => "Author was deleted."));
 }
  
 // if unable to delete the book
@@ -40,6 +40,6 @@ else{
     http_response_code(503);
  
     // tell the user
-    echo json_encode(array("message" => "Unable to delete publisher."));
+    echo json_encode(array("message" => "Unable to delete author."));
 }
 ?>

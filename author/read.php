@@ -5,25 +5,25 @@ header("Content-Type: application/json; charset=UTF-8");
  
 // include database and object files
 include_once '../config/database.php';
-include_once '../objects/publisher.php';
+include_once '../objects/author.php';
  
 // instantiate database and book object
 $database = new Database();
 $db = $database->getConnection();
  
 // initialize object
-$publisher = new Publisher($db);
+$author = new Author($db);
  
 // query books
-$stmt = $publisher->read();
+$stmt = $author->read();
 $num = $stmt->rowCount();
  
 // check if more than 0 record found
 if($num>0){
  
     // books array
-    $publishers_arr=array();
-    $publishers_arr["records"]=array();
+    $authors_arr=array();
+    $authors_arr["records"]=array();
  
     // retrieve our table contents
     // fetch() is faster than fetchAll()
@@ -34,19 +34,19 @@ if($num>0){
         // just $name only
         extract($row);
  
-        $publisher_item=array(
-            "idpublisher" => $idpublisher,
+        $author_item=array(
+            "idauthor" => $idauthor,
             "name" => $name      
         );
  
-        array_push($publishers_arr["records"], $publisher_item);
+        array_push($authors_arr["records"], $author_item);
     }
  
     // set response code - 200 OK
     http_response_code(200);
  
     // show books data in json format
-    echo json_encode($publishers_arr);
+    echo json_encode($authors_arr);
 } 
 else{
  
@@ -55,6 +55,6 @@ else{
  
     // tell the user no books found
     echo json_encode(
-        array("message" => "No publishers found.")
+        array("message" => "No authors found.")
     );
 }
