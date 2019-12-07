@@ -79,23 +79,32 @@ class Book{
     function readOne(){
     
         // query to read single record
-        $query = "SELECT
-                    c.name as category_name, p.id, p.name, p.description, p.price, p.category_id, p.created
-                FROM
-                    " . $this->table_name . " p
-                    LEFT JOIN
-                        categories c
-                            ON p.category_id = c.id
-                WHERE
-                    p.id = ?
-                LIMIT
-                    0,1";
+        $query = 
+        "SELECT
+            b.idbook, b.title, p.name as 'publisher', GROUP_CONCAT(a.name) as 'authors'
+        FROM
+            authors ats
+        LEFT JOIN
+            books b
+                ON b.idbook = ats.idbook
+        LEFT JOIN
+            author a
+                ON ats.idauthor = a.idauthor
+        LEFT JOIN
+            publishers p
+                ON p.idpublisher = b.idpublisher
+        WHERE
+            b.idbook = ?
+        GROUP BY
+            b.title";        
+        //LIMIT
+        //    0,1";
     
         // prepare query statement
         $stmt = $this->conn->prepare( $query );
     
         // bind id of product to be updated
-        $stmt->bindParam(1, $this->id);
+        $stmt->bindParam(1, $this->idbook);
     
         // execute query
         $stmt->execute();
@@ -104,11 +113,10 @@ class Book{
         $row = $stmt->fetch(PDO::FETCH_ASSOC);
     
         // set values to object properties
-        $this->name = $row['name'];
-        $this->price = $row['price'];
-        $this->description = $row['description'];
-        $this->category_id = $row['category_id'];
-        $this->category_name = $row['category_name'];
+        $this->idbook = $row['idbook'];
+        $this->title = $row['title'];
+        $this->publisher = $row['publisher'];
+        $this->authors = $row['authors'];
     }
 
     // update the product
