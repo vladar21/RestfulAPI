@@ -126,9 +126,9 @@ class Book{
         $query = "UPDATE
                     books
                 SET
-                idbook = :idbook,
-                " . (($this->title != "nothing")?("title = :title, "):"") . "
-                " . (($this->idpublisher != "nothing")?("idpublisher = :idpublisher"):"") . "    
+                idbook = :idbook
+                " . (($this->title != "nothing")?(", title = :title"):"") . "
+                " . (($this->idpublisher != "nothing")?(", idpublisher = :idpublisher"):"") . "    
                 WHERE
                     idbook = :idbook";
     

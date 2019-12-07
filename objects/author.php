@@ -1,12 +1,12 @@
 <?php
-class Publisher{
+class Author{
  
     // database connection and table name
     private $conn;
-    private $table_name = "publishers";
+    private $table_name = "author";
  
     // object properties
-    public $idpublisher;
+    public $idauthor;
     public $name;
  
     // constructor with $db as database connection
@@ -20,9 +20,9 @@ class Publisher{
         // select all query
         $query = 
     "SELECT
-        idpublisher, name
+        idauthor, name
     FROM
-        publishers";
+        author";
     
         // prepare query statement
         $stmt = $this->conn->prepare($query);
@@ -38,7 +38,7 @@ class Publisher{
         
         // query to insert record
         $query = "INSERT INTO
-                    publishers
+                    author
                 SET
                     name=:name";
     
@@ -50,7 +50,7 @@ class Publisher{
     
         // bind values
         $stmt->bindParam(":name", $this->name);
-       
+        
         // execute query
         if($stmt->execute()){
             return true; 
@@ -66,17 +66,17 @@ class Publisher{
         // query to read single record
         $query = 
         "SELECT
-            idpublisher, name
+            idauthor, name
         FROM
-            publishers
+            author
         WHERE
-            idpublisher = ?";        
+            idauthor = ?";        
         
         // prepare query statement
         $stmt = $this->conn->prepare( $query );
     
         // bind id of publisher to be updated
-        $stmt->bindParam(1, $this->idpublisher);
+        $stmt->bindParam(1, $this->idauthor);
     
         // execute query
         $stmt->execute();
@@ -85,7 +85,7 @@ class Publisher{
         $row = $stmt->fetch(PDO::FETCH_ASSOC);
     
         // set values to object properties
-        $this->idpublisher = $row['idpublisher'];
+        $this->idauthor = $row['idauthor'];
         $this->name = $row['name'];
     }
 
@@ -94,24 +94,24 @@ class Publisher{
     
         // update query
         $query = "UPDATE
-                    publishers
+                    author
                 SET
-                    idpublisher = :idpublisher
+                    idauthor = :idauthor
                     " . (($this->name != "nothing")?(", name = :name"):"") . "
                 WHERE
-                    idpublisher = :idpublisher";
+                    idauthor = :idauthor";
         
         // prepare query statement
         $stmt = $this->conn->prepare($query);        
     
         // sanitize
-        $this->idpublisher = htmlspecialchars(strip_tags($this->idpublisher));
+        $this->idauthor = htmlspecialchars(strip_tags($this->idauthor));
         $this->name = htmlspecialchars(strip_tags($this->name));
     
         // bind new values
-        $stmt->bindParam(':idpublisher', $this->idpublisher);
+        $stmt->bindParam(':idauthor', $this->idauthor);
         $stmt->bindParam(':name', $this->name);
-       
+        
         // execute the query
         if($stmt->execute()){
             return true;
@@ -124,16 +124,16 @@ class Publisher{
     function delete(){
     
         // delete query
-        $query = "DELETE FROM publishers WHERE idpublisher = ?";
+        $query = "DELETE FROM author WHERE idauthor = ?";
     
         // prepare query
         $stmt = $this->conn->prepare($query);
     
         // sanitize
-        $this->idpublisher=htmlspecialchars(strip_tags($this->idpublisher));
+        $this->idauthor=htmlspecialchars(strip_tags($this->idauthor));
     
         // bind id of record to delete
-        $stmt->bindParam(1, $this->idpublisher);
+        $stmt->bindParam(1, $this->idauthor);
     
         // execute query
         if($stmt->execute()){
@@ -149,11 +149,11 @@ class Publisher{
     
         // select all query
         $query = "SELECT
-                    idpublisher, name
+                    idauthor, name
                 FROM
-                    publishers
+                    author
                 WHERE
-                    idpublisher LIKE ? OR name LIKE ?";
+                    idauthor LIKE ? OR name LIKE ?";
 
         // prepare query statement
         $stmt = $this->conn->prepare($query);
