@@ -8,45 +8,42 @@ header('Content-Type: application/json');
  
 // include database and object files
 include_once '../config/database.php';
-include_once '../objects/product.php';
+include_once '../objects/book.php';
  
 // get database connection
 $database = new Database();
 $db = $database->getConnection();
  
-// prepare product object
-$product = new Product($db);
+// prepare book object
+$book = new Book($db);
  
 // set ID property of record to read
-$product->id = isset($_GET['id']) ? $_GET['id'] : die();
+$book->idbook = isset($_GET['idbook']) ? $_GET['idbook'] : die();
  
-// read the details of product to be edited
-$product->readOne();
+// read the details of book to be edited
+$book->readOne();
  
-if($product->name!=null){
+if($book->title!=null){
     // create array
-    $product_arr = array(
-        "id" =>  $product->id,
-        "name" => $product->name,
-        "description" => $product->description,
-        "price" => $product->price,
-        "category_id" => $product->category_id,
-        "category_name" => $product->category_name
- 
+    $book_arr = array(
+        "idbook" =>  $book->idbook,
+        "title" => $book->title,
+        "publisher" => $book->publisher,
+        "authors" => $book->authors 
     );
  
     // set response code - 200 OK
     http_response_code(200);
  
     // make it json format
-    echo json_encode($product_arr);
+    echo json_encode($book_arr);
 }
  
 else{
     // set response code - 404 Not found
     http_response_code(404);
  
-    // tell the user product does not exist
-    echo json_encode(array("message" => "Product does not exist."));
+    // tell the user book does not exist
+    echo json_encode(array("message" => "Book does not exist."));
 }
 ?>

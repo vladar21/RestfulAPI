@@ -6,45 +6,40 @@ header("Access-Control-Allow-Methods: POST");
 header("Access-Control-Max-Age: 3600");
 header("Access-Control-Allow-Headers: Content-Type, Access-Control-Allow-Headers, Authorization, X-Requested-With");
  
-// include database and object files
+// include database and object file
 include_once '../config/database.php';
-include_once '../objects/product.php';
+include_once '../objects/book.php';
  
 // get database connection
 $database = new Database();
 $db = $database->getConnection();
  
-// prepare product object
-$product = new Product($db);
+// prepare book object
+$book = new Book($db);
  
-// get id of product to be edited
+// get book id
 $data = json_decode(file_get_contents("php://input"));
  
-// set ID property of product to be edited
-$product->id = $data->id;
+// set book id to be deleted
+$book->idbook = $data->idbook;
  
-// set product property values
-$product->name = $data->name;
-$product->price = $data->price;
-$product->description = $data->description;
-$product->category_id = $data->category_id;
- 
-// update the product
-if($k = $product->update()){
+// delete the book
+if($book->delete()){
  
     // set response code - 200 ok
     http_response_code(200);
  
     // tell the user
-    echo json_encode(array("message" => "Product was updated."));
-}// if unable to update the product, tell the user
+    echo json_encode(array("message" => "Book was deleted."));
+}
+ 
+// if unable to delete the book
 else{
  
     // set response code - 503 service unavailable
     http_response_code(503);
  
     // tell the user
-    echo json_encode(array("message" => "Unable to update product."));
+    echo json_encode(array("message" => "Unable to delete book."));
 }
-dump("k = ", $k);
 ?>

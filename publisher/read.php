@@ -4,30 +4,26 @@ header("Access-Control-Allow-Origin: *");
 header("Content-Type: application/json; charset=UTF-8");
  
 // include database and object files
-include_once '../config/core.php';
 include_once '../config/database.php';
-include_once '../objects/product.php';
+include_once '../objects/book.php';
  
-// instantiate database and product object
+// instantiate database and book object
 $database = new Database();
 $db = $database->getConnection();
  
 // initialize object
-$product = new Product($db);
+$book = new Book($db);
  
-// get keywords
-$keywords=isset($_GET["s"]) ? $_GET["s"] : "";
- 
-// query products
-$stmt = $product->search($keywords);
+// query books
+$stmt = $book->read();
 $num = $stmt->rowCount();
  
 // check if more than 0 record found
 if($num>0){
  
-    // products array
-    $products_arr=array();
-    $products_arr["records"]=array();
+    // books array
+    $books_arr=array();
+    $books_arr["records"]=array();
  
     // retrieve our table contents
     // fetch() is faster than fetchAll()
@@ -38,32 +34,29 @@ if($num>0){
         // just $name only
         extract($row);
  
-        $product_item=array(
-            "id" => $id,
-            "name" => $name,
-            "description" => html_entity_decode($description),
-            "price" => $price,
-            "category_id" => $category_id,
-            "category_name" => $category_name
+        $book_item=array(
+            "idbook" => $idbook,
+            "title" => $title,
+            "publisher" => $publisher,
+            "authors" => $authors      
         );
  
-        array_push($products_arr["records"], $product_item);
+        array_push($books_arr["records"], $book_item);
     }
  
     // set response code - 200 OK
     http_response_code(200);
  
-    // show products data
-    echo json_encode($products_arr);
-}
- 
+    // show books data in json format
+    echo json_encode($books_arr);
+} 
 else{
+ 
     // set response code - 404 Not found
     http_response_code(404);
  
-    // tell the user no products found
+    // tell the user no books found
     echo json_encode(
-        array("message" => "No products found.")
+        array("message" => "No books found.")
     );
 }
-?>
