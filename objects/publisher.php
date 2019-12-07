@@ -70,9 +70,7 @@ class Publisher{
         FROM
             publishers
         WHERE
-            idpublisher = ?
-        GROUP BY
-            b.title";        
+            idpublisher = ?";        
         
         // prepare query statement
         $stmt = $this->conn->prepare( $query );

@@ -8,35 +8,33 @@ header('Content-Type: application/json');
  
 // include database and object files
 include_once '../config/database.php';
-include_once '../objects/book.php';
+include_once '../objects/publisher.php';
  
 // get database connection
 $database = new Database();
 $db = $database->getConnection();
  
 // prepare book object
-$book = new Book($db);
+$publisher = new Publisher($db);
  
 // set ID property of record to read
-$book->idbook = isset($_GET['idbook']) ? $_GET['idbook'] : die();
+$publisher->idpublisher = isset($_GET['idpublisher']) ? $_GET['idpublisher'] : die();
  
 // read the details of book to be edited
-$book->readOne();
+$publisher->readOne();
  
-if($book->title!=null){
+if($publisher->name!=null){
     // create array
-    $book_arr = array(
-        "idbook" =>  $book->idbook,
-        "title" => $book->title,
-        "publisher" => $book->publisher,
-        "authors" => $book->authors 
+    $publisher_arr = array(
+        "idpublisher" =>  $publisher->idpublisher,
+        "name" => $publisher->name
     );
  
     // set response code - 200 OK
     http_response_code(200);
  
     // make it json format
-    echo json_encode($book_arr);
+    echo json_encode($publisher_arr);
 }
  
 else{
@@ -44,6 +42,6 @@ else{
     http_response_code(404);
  
     // tell the user book does not exist
-    echo json_encode(array("message" => "Book does not exist."));
+    echo json_encode(array("message" => "Publisher does not exist."));
 }
 ?>
