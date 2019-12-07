@@ -124,31 +124,26 @@ class Book{
     
         // update query
         $query = "UPDATE
-                    " . $this->table_name . "
+                    books
                 SET
-                    name = :name,
-                    price = :price,
-                    description = :description,
-                    category_id = :category_id
+                idbook = :idbook,
+                " . (($this->title != "nothing")?("title = :title, "):"") . "
+                " . (($this->idpublisher != "nothing")?("idpublisher = :idpublisher"):"") . "    
                 WHERE
-                    id = :id";
+                    idbook = :idbook";
     
         // prepare query statement
         $stmt = $this->conn->prepare($query);
     
         // sanitize
-        $this->name=htmlspecialchars(strip_tags($this->name));
-        $this->price=htmlspecialchars(strip_tags($this->price));
-        $this->description=htmlspecialchars(strip_tags($this->description));
-        $this->category_id=htmlspecialchars(strip_tags($this->category_id));
-        $this->id=htmlspecialchars(strip_tags($this->id));
+        $this->idbook=htmlspecialchars(strip_tags($this->idbook));
+        $this->title=htmlspecialchars(strip_tags($this->title));
+        $this->idpublisher=htmlspecialchars(strip_tags($this->idpublisher));
     
         // bind new values
-        $stmt->bindParam(':name', $this->name);
-        $stmt->bindParam(':price', $this->price);
-        $stmt->bindParam(':description', $this->description);
-        $stmt->bindParam(':category_id', $this->category_id);
-        $stmt->bindParam(':id', $this->id);
+        $stmt->bindParam(':idbook', $this->idbook);
+        $stmt->bindParam(':title', $this->title);
+        $stmt->bindParam(':idpublisher', $this->idpublisher);
     
         // execute the query
         if($stmt->execute()){
