@@ -52,8 +52,8 @@
 
 Работа API тестировалась с помощью программы Postman (https://www.getpostman.com/).  
 
-№№№ метод read().
+### Метод read().
 
-[home page url]/[название сущности]/read.php  
-Например: http://localhost:8000/book/read.php
+Структура запроса:  [home page url]/[название сущности]/read.php  
+Пример: http://localhost:8000/book/read.php
 
