@@ -54,6 +54,36 @@
 
 ### Метод read().
 
+Считываем всю информацию из таблицы сущности.  
+
 Структура запроса:  [home page url]/[название сущности]/read.php  
 Пример: http://localhost:8000/book/read.php
 
+### Метод readOne().
+
+Считываем конкретную строку из таблицы сущности.  
+
+Структура запроса:  [home page url]/[название сущности]/read_one.php?[id строки сущности]=[номер id]  
+Пример: http://localhost:8000/book/read_one.php?idbook=7
+
+### Метод readPaging().
+
+Метод read(), но с пагинацией. Работатет только для сущности Книга (Book).
+
+Структура запроса:  [home page url]/book/read_paging.php  
+Пример: http://localhost:8000/book/read_paging.php
+
+### Метод create().
+
+Создает новый объект сущности.
+
+Структура запроса:  
+GET запрос [home page url]/[название сущности]/create.php  
+POST(JSON) запрос { "idpublisher" : "[id издателя]", "title" : "[название книги]"}  
+Пример:  
+GET http://localhost:8000/book/create.php  
+POST { "idpublisher" : "3", "title" : "New Book Created" }
+
+###
+
+###
