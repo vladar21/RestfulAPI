@@ -8,40 +8,40 @@ header("Access-Control-Allow-Headers: Content-Type, Access-Control-Allow-Headers
  
 // include database and object files
 include_once '../config/database.php';
-include_once '../objects/publisher.php';
+include_once '../objects/author.php';
  
 // get database connection
 $database = new Database();
 $db = $database->getConnection();
  
-// prepare publisher object
-$publisher = new Publisher($db);
+// prepare author object
+$author = new Author($db);
  
-// get id of book to be edited
+// get id of author to be edited
 $data = json_decode(file_get_contents("php://input"));
  
-// set ID property of book to be edited
-$publisher->idpublisher = $data->idpublisher;
+// set ID property of author to be edited
+$author->idauthor = $data->idauthor;
  
-// set book property values
-$publisher->name = (isset($data->name))?($data->name):("nothing");
+// set author property values
+$author->name = (isset($data->name))?($data->name):("nothing");
 
-// update the book
-if($k = $publisher->update()){
+// update the author
+if($k = $author->update()){
  
     // set response code - 200 ok
     http_response_code(200);
  
     // tell the user
-    echo json_encode(array("message" => "Publisher was updated."));
-}// if unable to update the book, tell the user
+    echo json_encode(array("message" => "Author was updated."));
+}// if unable to update the author, tell the user
 else{
  
     // set response code - 503 service unavailable
     http_response_code(503);
  
     // tell the user
-    echo json_encode(array("message" => "Unable to update publisher."));
+    echo json_encode(array("message" => "Unable to update author."));
     var_dump("k = ", $k);
 }
 

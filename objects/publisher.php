@@ -144,7 +144,7 @@ class Publisher{
         
     }
 
-    // search books
+    // search publishers
     function search($keywords){
     
         // select all query
