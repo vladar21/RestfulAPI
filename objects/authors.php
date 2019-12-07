@@ -1,28 +1,35 @@
 <?php
-class Author{
+class Authors{
  
     // database connection and table name
     private $conn;
-    private $table_name = "author";
+    private $table_name = "authors";
  
     // object properties
+    public $idauthors;
     public $idauthor;
-    public $name;
+    public $idbook;
  
     // constructor with $db as database connection
     public function __construct($db){
         $this->conn = $db;
     }
 
-    // read authors
+    // read publishers
     function read(){
     
         // select all query
         $query = 
     "SELECT
-        idauthor, name
+        ats.idauthors as 'idauthors', ats.idauthor as 'idauthor', a.name as 'author', b.idbook as 'idbook', b.title as 'title'
     FROM
-        author";
+        authors ats
+    LEFT JOIN
+        author a
+            ON a.idauthor = ats.idauthor
+    LEFT JOIN
+        books b
+            ON b.idbook = ats.idbook";
     
         // prepare query statement
         $stmt = $this->conn->prepare($query);
@@ -33,7 +40,7 @@ class Author{
         return $stmt;
     }
 
-    // create author
+    // create publisher
     function create(){
         
         // query to insert record
@@ -60,7 +67,7 @@ class Author{
         
     }
 
-    // used when filling up the update author form
+    // used when filling up the update publisher form
     function readOne(){
     
         // query to read single record
@@ -75,7 +82,7 @@ class Author{
         // prepare query statement
         $stmt = $this->conn->prepare( $query );
     
-        // bind id of author to be updated
+        // bind id of publisher to be updated
         $stmt->bindParam(1, $this->idauthor);
     
         // execute query
@@ -89,7 +96,7 @@ class Author{
         $this->name = $row['name'];
     }
 
-    // update the author
+    // update the publisher
     function update(){
     
         // update query
@@ -120,7 +127,7 @@ class Author{
         return false;
     }
 
-    // delete the author
+    // delete the publisher
     function delete(){
     
         // delete query
