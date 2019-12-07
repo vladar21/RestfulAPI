@@ -1,9 +1,9 @@
 # RestfulAPI
 ## Структура файлов проекта
 
-1. dir: RestfulAPI
-    1. dir: author (CRUD для сущности Автор)
-        1.1.1. file: create.php
+* dir: RestfulAPI
+    * dir: author (CRUD для сущности Автор)
+        - file: create.php
     1.1.2. file: delete.php
     1.1.3. file: read_one.php
     1.1.4. file: read.php
