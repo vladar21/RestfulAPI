@@ -177,22 +177,28 @@ class Book{
         
     }
 
-    // search products
+    // search books
     function search($keywords){
     
         // select all query
         $query = "SELECT
-                    c.name as category_name, p.id, p.name, p.description, p.price, p.category_id, p.created
+                    b.idbook, b.title, p.name as 'publisher', GROUP_CONCAT(a.name) as 'authors'
                 FROM
-                    " . $this->table_name . " p
-                    LEFT JOIN
-                        categories c
-                            ON p.category_id = c.id
+                    authors ats
+                LEFT JOIN
+                    books b
+                        ON b.idbook = ats.idbook
+                LEFT JOIN
+                    author a
+                        ON ats.idauthor = a.idauthor
+                LEFT JOIN
+                    publishers p
+                        ON p.idpublisher = b.idpublisher
                 WHERE
-                    p.name LIKE ? OR p.description LIKE ? OR c.name LIKE ?
-                ORDER BY
-                    p.created DESC";
-    
+                    b.title LIKE ? OR p.name LIKE ? OR a.name LIKE ?
+                GROUP BY
+                    b.title";
+
         // prepare query statement
         $stmt = $this->conn->prepare($query);
     
