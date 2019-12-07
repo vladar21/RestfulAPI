@@ -9,7 +9,7 @@ class Book{
     public $idbook;
     public $publisher;
     public $title;
-    public $author;
+    public $authors;
  
     // constructor with $db as database connection
     public function __construct($db){
@@ -20,19 +20,22 @@ class Book{
     function read(){
     
         // select all query
-        $query = "SELECT
-                    b.idbook, b.title, p.name as 'publisher', a.name as 'author'
-                FROM
-                    authors ats
-                LEFT JOIN
-                    books b
-                        ON b.idbook = ats.idbook
-                LEFT JOIN
-                    author a
-                        ON ats.idauthor = a.idauthor
-                LEFT JOIN
-                    publishers p
-                        ON p.idpublisher = b.idpublisher;";
+        $query = 
+    "SELECT
+        b.idbook, b.title, p.name as 'publisher', GROUP_CONCAT(a.name) as 'authors'
+    FROM
+        authors ats
+    LEFT JOIN
+        books b
+            ON b.idbook = ats.idbook
+    LEFT JOIN
+        author a
+            ON ats.idauthor = a.idauthor
+    LEFT JOIN
+        publishers p
+            ON p.idpublisher = b.idpublisher
+    GROUP BY
+        b.title;";
     
         // prepare query statement
         $stmt = $this->conn->prepare($query);
@@ -43,35 +46,29 @@ class Book{
         return $stmt;
     }
 
-    // create product
+    // create book
     function create(){
-    
+        
         // query to insert record
         $query = "INSERT INTO
-                    " . $this->table_name . "
+                    books
                 SET
-                    name=:name, price=:price, description=:description, category_id=:category_id, created=:created";
+                    title=:title, idpublisher=:idpublisher";
     
         // prepare query
         $stmt = $this->conn->prepare($query);
     
         // sanitize
-        $this->name=htmlspecialchars(strip_tags($this->name));
-        $this->price=htmlspecialchars(strip_tags($this->price));
-        $this->description=htmlspecialchars(strip_tags($this->description));
-        $this->category_id=htmlspecialchars(strip_tags($this->category_id));
-        $this->created=htmlspecialchars(strip_tags($this->created));
+        $this->title=htmlspecialchars(strip_tags($this->title));
+        $this->idpublisher=htmlspecialchars(strip_tags($this->idpublisher));        
     
         // bind values
-        $stmt->bindParam(":name", $this->name);
-        $stmt->bindParam(":price", $this->price);
-        $stmt->bindParam(":description", $this->description);
-        $stmt->bindParam(":category_id", $this->category_id);
-        $stmt->bindParam(":created", $this->created);
-    
+        $stmt->bindParam(":title", $this->title);
+        $stmt->bindParam(":idpublisher", $this->idpublisher);
+        
         // execute query
         if($stmt->execute()){
-            return true;
+            return true; 
         }
     
         return false;
@@ -157,16 +154,16 @@ class Book{
     function delete(){
     
         // delete query
-        $query = "DELETE FROM " . $this->table_name . " WHERE id = ?";
+        $query = "DELETE FROM books WHERE idbook = ?";
     
         // prepare query
         $stmt = $this->conn->prepare($query);
     
         // sanitize
-        $this->id=htmlspecialchars(strip_tags($this->id));
+        $this->idbook=htmlspecialchars(strip_tags($this->idbook));
     
         // bind id of record to delete
-        $stmt->bindParam(1, $this->id);
+        $stmt->bindParam(1, $this->idbook);
     
         // execute query
         if($stmt->execute()){

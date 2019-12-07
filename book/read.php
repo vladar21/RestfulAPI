@@ -38,7 +38,7 @@ if($num>0){
             "idbook" => $idbook,
             "title" => $title,
             "publisher" => $publisher,
-            "author" => $author      
+            "authors" => $authors      
         );
  
         array_push($books_arr["records"], $book_item);
