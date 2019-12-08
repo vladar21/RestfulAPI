@@ -24,7 +24,7 @@
         - file: read.php
         - file: search.php
         - file: update.php
-    * config
+    * dir: config
         - file: core.php (вспомогательные функции и переменные для пагинации)
         - file: database.php (настройки для связи с базой данных)
         - file: Library.vpd.jpg (ERP diagramm)
